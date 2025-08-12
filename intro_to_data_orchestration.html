@@ -24,6 +24,7 @@
 <section>
   <h2>Agenda</h2>
   <ul>
+    <li>What are Data Pipelines?</li>
     <li>What is Data Orchestration?</li>
     <li>Why Orchestrators Matter</li>
     <li>Apache Airflow Overview</li>
@@ -38,15 +39,16 @@
 <section>
   <h2>The Big Picture: Data Pipelines</h2>
   <ul>
-    <li>Ingest → [Transform ⇆ Store] → Analyze</li>
+    <li>Series (graph) of data processing tasks</li>
+    <li>E.g., Ingest → [Transform ⇆ Store] → Analyze</li>
     <li>Orchestration coordinates each step and manages dependencies</li>
   </ul>
 </section>
 
 <section>
   <h2>ETL vs. ELT</h2>
-  <img src="etl-pipeline-127870698.png" alt="ETL Diagram" style="max-height: 200px;">
-  <img src="elt-pipeline-1024x336-81340412.png" alt="ELT Diagram" style="max-height: 200px;">
+  <img src="assets/etl-pipeline-127870698.png" alt="ETL Diagram" style="max-height: 200px;">
+  <img src="assets/elt-pipeline-1024x336-81340412.png" alt="ELT Diagram" style="max-height: 200px;">
   <p style="font-size:0.6em;">Source: <a href="https://www.simform.com/blog/data-pipeline/" target="_blank">https://www.simform.com/blog/data-pipeline/</a></p>
   <aside class="notes">
     <ul>
@@ -57,12 +59,34 @@
   </aside>
 </section>
 
-
 <section>
   <h2>What is Data Orchestration?</h2>
   <ul>
-    <li>Coordinating execution, dependencies, and state of data tasks</li>
-    <li>Scheduling, dependency management, retries, monitoring</li>
+    <li>Coordinates execution of data tasks</li>
+    <li>Schedules tasks (time-based, sensor-based)</li>
+    <li>Manages dependencies</li>
+    <li>Handles retries</li>
+    <li>Monitors completion</li>
+    <li>Tracks assets (metadata, staleness, etc.)</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Task-based vs. Asset-based</h2>
+  <ul>
+    <li><strong>Task-based</strong>: focused on imperative steps of data processing</li>
+    <li>Imagine baking cookies using functions get_ingredients, mix_ingredients, bake_cookies</li>
+    <hr>
+    <li><strong>Asset-based</strong>: focused on data assets created "between" processing steps</li>
+    <li>Imagine baking cookies by <i>materializing</i> assets measured_ingredients, cookie_dough, cookies</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Task-based vs. Asset-based</h2>
+  <ul>
+    <li><strong>Task-based</strong>: prominent in Airflow 2</li>
+    <li><strong>Asset-based</strong>: prominent in Dagster and Airflow 3</li>
   </ul>
 </section>
 
@@ -79,7 +103,7 @@
 
 <section>
   <h2>What is a DAG?</h2>
-  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/f/fe/Tred-G.svg/559px-Tred-G.svg.png" alt="Example DAG" style="float: right; margin-left: 20px; max-width: 30%;">
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ef/Tred-Gprime.svg/397px-Tred-Gprime.svg.png" alt="Example DAG" style="float: right; margin-left: 20px; max-width: 20%;">
   <ul style="display: inline">
     <li><strong>DAG</strong> = Directed Acyclic Graph</li>
     <li>Represents tasks (nodes) and dependencies (edges) in a workflow</li>
@@ -99,32 +123,28 @@
 </section>
 
 <section>
-  <h2>Apache Airflow Overview</h2>
+  <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/AirflowLogo.svg/640px-AirflowLogo.svg.png" alt="Airflow Logo" style="max-width: 40%;">
   <ul>
-    <li>Origin: Airbnb, now Apache project</li>
-    <li>DAG-based workflows</li>
-    <li>Large community &amp; integrations</li>
+    <li>Origin: Airbnb (2015), now Apache project (2019)</li>
+    <li>DAG-based workflows (historically, task-based)</li>
+    <li>Large community</li>
+    <li>Well-documented</li>
+    <li>Extensive use in industry</li>
   </ul>
 </section>
 
 <section>
-  <h2>Airflow 2 vs Airflow 3</h2>
-  <table>
-    <tr><th>Feature</th><th>Airflow 2</th><th>Airflow 3</th></tr>
-    <tr><td>Executor</td><td>Celery/K8s/Local</td><td>Async-first, better scaling</td></tr>
-    <tr><td>API</td><td>Stable REST API</td><td>Expanded API surface</td></tr>
-    <tr><td>Scheduling</td><td>Static DAG parse</td><td>Dynamic mapping improvements</td></tr>
-    <tr><td>UI</td><td>Grid view</td><td>Real-time React UI</td></tr>
-  </table>
+  <h2>New in Airflow 3</h2>
+  <ul>
+    <li>Asset-based workflows</li>
+    <li>Improved UI</li>
+    <li>DAG versioning</li>
+    <li>Task execution independent of core Airflow</li>
+  </ul>
 </section>
 
 <section>
-  <h2>Airflow Architecture</h2>
-  <img src="diagram_airflow_architecture.png" alt="Airflow Architecture" style="max-height:400px;">
-</section>
-
-<section>
-  <h2>Dagster Overview</h2>
+  <img src="https://cdn.prod.website-files.com/681399f654933b29e12fb8bd/681399f654933b29e12fb8e1_Dagster%20Logo.avif" alt="Dagster Logo" style="max-width: 40%;">
   <ul>
     <li>Launched 2019</li>
     <li>Asset-centric approach</li>
@@ -133,61 +153,19 @@
 </section>
 
 <section>
-  <h2>Dagster Architecture</h2>
-  <img src="diagram_dagster_architecture.png" alt="Dagster Architecture" style="max-height:400px;">
-</section>
-
-<section>
-  <h2>Different Philosophies</h2>
-  <table>
-    <tr><th>Feature</th><th>Airflow</th><th>Dagster</th></tr>
-    <tr><td>Paradigm</td><td>Task/DAG-based</td><td>Asset-based</td></tr>
-    <tr><td>UI</td><td>Monitoring/admin</td><td>Dev + monitoring</td></tr>
-    <tr><td>Testing</td><td>Minimal</td><td>Built-in</td></tr>
-  </table>
-</section>
-
-<section>
-  <h2>Demo: Airflow</h2>
-  <pre><code class="language-python">
-from airflow import DAG
-from airflow.operators.python import PythonOperator
-from datetime import datetime
-
-def fetch_data():
-    print("Fetching data...")
-
-with DAG("etl_airflow", start_date=datetime(2023, 1, 1), schedule_interval="@daily") as dag:
-    fetch_task = PythonOperator(task_id="fetch", python_callable=fetch_data)
-  </code></pre>
+  <h2>Demo: Airflow 2</h2>
 </section>
 
 <section>
   <h2>Demo: Dagster</h2>
-  <pre><code class="language-python">
-from dagster import asset
-
-@asset
-def fetch_data():
-    print("Fetching data...")
-  </code></pre>
-</section>
-
-<section>
-  <h2>Strengths Recap</h2>
-  <table>
-    <tr><th>Feature</th><th>Airflow</th><th>Dagster</th></tr>
-    <tr><td>Ecosystem</td><td>✅</td><td>⚠</td></tr>
-    <tr><td>Dev Experience</td><td>⚠</td><td>✅</td></tr>
-    <tr><td>Asset Awareness</td><td>⚠</td><td>✅</td></tr>
-  </table>
 </section>
 
 <section>
   <h2>Final Takeaways</h2>
   <ul>
     <li>Orchestration = reliability for data pipelines</li>
-    <li>Airflow 2 solid; Airflow 3 coming</li>
+    <li>Both Airflow and Dagster are solid choices</li>
+    <li>Airflow more prevalent in industry; recently modernized</li>
     <li>Dagster modern and dev-friendly</li>
   </ul>
 </section>
